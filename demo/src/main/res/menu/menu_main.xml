@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="im.ene.ribbon.demo.MainActivity">
+  <item
+      android:id="@+id/action_1"
+      android:icon="@drawable/ic_face_black_24dp"
+      android:orderInCategory="100"
+      android:title="Tab 1"
+      app:showAsAction="always"/>
+
+  <item
+      android:id="@+id/action_2"
+      android:icon="@drawable/ic_favorite_black_24dp"
+      android:orderInCategory="100"
+      android:title="Tab 2"
+      app:showAsAction="always"/>
+
+  <item
+      android:id="@+id/action_3"
+      android:icon="@drawable/ic_android_black_24dp"
+      android:orderInCategory="100"
+      android:title="Tab 3"
+      app:showAsAction="always"/>
+
+  <item
+      android:id="@+id/action_4"
+      android:icon="@drawable/ic_more_horiz_black_24dp"
+      android:orderInCategory="100"
+      android:title="Tab 4"
+      app:showAsAction="always"/>
+
+  <!--<item-->
+  <!--android:id="@+id/action_5"-->
+  <!--android:icon="@mipmap/ic_launcher"-->
+  <!--android:orderInCategory="100"-->
+  <!--android:title="Tab 5"-->
+  <!--app:showAsAction="always"/>-->
+</menu>
