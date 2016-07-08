@@ -58,7 +58,6 @@ import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -157,10 +156,6 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
    */
   private ColorDrawable backgroundDrawable;
 
-  private final TypedValue mTypedValue = new TypedValue();
-
-  private int mBackground;
-
   /**
    * Animation duration for the background color change
    */
@@ -198,8 +193,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
   }
 
   public BottomNavigationView(final Context context, final AttributeSet attrs) {
-    super(context, attrs);
-    initialize(context, attrs, 0, 0);
+    this(context, attrs, 0);
   }
 
   public BottomNavigationView(final Context context, final AttributeSet attrs,
@@ -226,7 +220,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
       savedState.selectedIndex = Math.max(0, Math.min(getSelectedItem(), menu.getItemCount() - 1));
     }
 
-    if (null != badgeProvider) {
+    if (badgeProvider != null) {
       savedState.badgeBundle = badgeProvider.save();
     }
 
@@ -241,66 +235,69 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
     defaultSelectedIndex = savedState.selectedIndex;
     log(TAG, Log.DEBUG, "defaultSelectedIndex: %d", defaultSelectedIndex);
 
-    if (null != badgeProvider && null != savedState.badgeBundle) {
+    if (badgeProvider != null && savedState.badgeBundle != null) {
       badgeProvider.restore(savedState.badgeBundle);
     }
   }
 
-  public BadgeProvider getBadgeProvider() {
+  public final BadgeProvider getBadgeProvider() {
     return badgeProvider;
   }
 
   private void initialize(final Context context, final AttributeSet attrs, final int defStyleAttr,
       final int defStyleRes) {
-    context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
-    mBackground = mTypedValue.resourceId;
-    setBackgroundResource(mBackground);
-
     typeface = new SoftReference<>(Typeface.DEFAULT);
 
     TypedArray array =
         context.obtainStyledAttributes(attrs, R.styleable.BottomNavigationView, defStyleAttr,
             defStyleRes);
-    final int menuResId = array.getResourceId(R.styleable.BottomNavigationView_bbn_entries, 0);
+    final int menuResId = array.getResourceId(R.styleable.BottomNavigationView_ribbon_menu, 0);
+    if (menuResId == 0) {
+      throw new IllegalArgumentException("A valid menu must be set in xml");
+    }
+
     pendingMenu = MenuParser.inflateMenu(context, menuResId);
     badgeProvider = parseBadgeProvider(this, context,
-        array.getString(R.styleable.BottomNavigationView_bbn_badgeProvider));
+        array.getString(R.styleable.BottomNavigationView_ribbon_badgeProvider));
     array.recycle();
 
     backgroundColorAnimation =
-        getResources().getInteger(R.integer.bbn_background_animation_duration);
+        getResources().getInteger(R.integer.ribbon_background_animation_duration);
+
     defaultSelectedIndex = 0;
 
-    defaultHeight = getResources().getDimensionPixelSize(R.dimen.bbn_bottom_navigation_height);
-    defaultWidth = getResources().getDimensionPixelSize(R.dimen.bbn_bottom_navigation_width);
-    shadowHeight = getResources().getDimensionPixelOffset(R.dimen.bbn_top_shadow_height);
+    defaultHeight = getResources().getDimensionPixelSize(R.dimen.ribbon_bottom_navigation_height);
+    defaultWidth = getResources().getDimensionPixelSize(R.dimen.ribbon_bottom_navigation_width);
+    shadowHeight = getResources().getDimensionPixelOffset(R.dimen.ribbon_top_shadow_height);
 
     // check if the bottom navigation is translucent
     if (!isInEditMode()) {
       final Activity activity = MiscUtils.getActivity(context);
-      if (null != activity) {
-        final SystemBarTintManager systembarTint = new SystemBarTintManager(activity);
-        if (MiscUtils.hasTranslucentNavigationBar(activity) && systembarTint.getConfig()
-            .isNavigationAtBottom() && systembarTint.getConfig().hasNavigtionBar()) {
-          bottomInset = systembarTint.getConfig().getNavigationBarHeight();
+      if (activity != null) {
+        final SystemBarTintManager systemBarTintManager = new SystemBarTintManager(activity);
+        if (MiscUtils.hasTranslucentNavigationBar(activity) &&  //
+            systemBarTintManager.getConfig().isNavigationAtBottom() &&  //
+            systemBarTintManager.getConfig().hasNavigtionBar()) {
+          bottomInset = systemBarTintManager.getConfig().getNavigationBarHeight();
         } else {
           bottomInset = 0;
         }
-        topInset = systembarTint.getConfig().getStatusBarHeight();
+        topInset = systemBarTintManager.getConfig().getStatusBarHeight();
       }
     }
 
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+    params.topMargin = shadowHeight;
     backgroundOverlay = new View(getContext());
     backgroundOverlay.setLayoutParams(params);
     addView(backgroundOverlay);
   }
 
-  int getPendingAction() {
+  /* package */ int getPendingAction() {
     return mPendingAction;
   }
 
-  void resetPendingAction() {
+  /* package */ void resetPendingAction() {
     mPendingAction = PENDING_ACTION_NONE;
   }
 
@@ -344,14 +341,15 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
         && ((BottomNavigationBehavior) mBehavior).isExpanded();
   }
 
+  @SuppressWarnings("unused")
   public void setOnActionClickListener(final OnTabSelectedListener listener) {
     this.listener = listener;
   }
 
-  public void setMenuItems(@MenuRes final int menuResId) {
+  @SuppressWarnings("unused") public void setMenuItems(@MenuRes final int menuResId) {
     defaultSelectedIndex = 0;
     if (isAttachedToWindow()) {
-      setItems(MenuParser.inflateMenu(getContext(), menuResId));
+      setMenu(MenuParser.inflateMenu(getContext(), menuResId));
       pendingMenu = null;
     } else {
       pendingMenu = MenuParser.inflateMenu(getContext(), menuResId);
@@ -385,8 +383,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
 
   @Override protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    // log(TAG, INFO, "onMeasure: %d", gravity);
-
+    log(TAG, INFO, "onMeasure: %d", gravity);
     if (MiscUtils.isGravityBottom(gravity)) {
       final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
       final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -425,10 +422,23 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
   }
 
   public boolean isAttachedToWindow() {
-    if (Build.VERSION.SDK_INT >= 19) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       return super.isAttachedToWindow();
     }
     return attached;
+  }
+
+  private void resolveGravity(ViewGroup.LayoutParams params) {
+    if (params instanceof FrameLayout.LayoutParams) {
+      this.gravity = GravityCompat.getAbsoluteGravity(((LayoutParams) params).gravity,
+          ViewCompat.getLayoutDirection(this));
+    } else if (params instanceof CoordinatorLayout.LayoutParams) {
+      this.gravity =
+          GravityCompat.getAbsoluteGravity(((CoordinatorLayout.LayoutParams) params).gravity,
+              ViewCompat.getLayoutDirection(this));
+    }
+
+    initializeUI(gravity);
   }
 
   @Override protected void onAttachedToWindow() {
@@ -436,28 +446,25 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
     super.onAttachedToWindow();
     attached = true;
 
-    final CoordinatorLayout.LayoutParams params =
-        (CoordinatorLayout.LayoutParams) getLayoutParams();
-    this.gravity =
-        GravityCompat.getAbsoluteGravity(params.gravity, ViewCompat.getLayoutDirection(this));
-    initializeUI(gravity);
+    final ViewGroup.LayoutParams params = getLayoutParams();
+    resolveGravity(params);
 
     if (null != pendingMenu) {
-      setItems(pendingMenu);
+      setMenu(pendingMenu);
       pendingMenu = null;
     }
 
-    if (null == mBehavior) {
-      if (CoordinatorLayout.LayoutParams.class.isInstance(params)) {
-        mBehavior = params.getBehavior();
+    if (mBehavior == null) {
+      if (params instanceof CoordinatorLayout.LayoutParams) {
+        mBehavior = ((CoordinatorLayout.LayoutParams) params).getBehavior();
 
         if (isInEditMode()) {
           return;
         }
 
-        if (BottomNavigationBehavior.class.isInstance(mBehavior)) {
+        if (mBehavior instanceof BottomNavigationBehavior) {
           ((BottomNavigationBehavior) mBehavior).setLayoutValues(defaultHeight, bottomInset);
-        } else if (TabletBehavior.class.isInstance(mBehavior)) {
+        } else if (mBehavior instanceof TabletBehavior) {
           final Activity activity = MiscUtils.getActivity(getContext());
           boolean translucentStatus = MiscUtils.hasTranslucentStatusBar(activity);
           ((TabletBehavior) mBehavior).setLayoutValues(defaultWidth, topInset, translucentStatus);
@@ -466,21 +473,19 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
     }
   }
 
-  public CoordinatorLayout.Behavior getBehavior() {
-    if (null == mBehavior) {
-      if (CoordinatorLayout.LayoutParams.class.isInstance(getLayoutParams())) {
+  @SuppressWarnings("unused") public CoordinatorLayout.Behavior getBehavior() {
+    if (mBehavior == null) {
+      if (getLayoutParams() instanceof CoordinatorLayout.LayoutParams) {
         return ((CoordinatorLayout.LayoutParams) getLayoutParams()).getBehavior();
       }
     }
     return mBehavior;
   }
 
-  private void setItems(MenuParser.Menu menu) {
-    log(TAG, INFO, "setItems: %s", menu);
-
+  private void setMenu(MenuParser.Menu menu) {
+    log(TAG, INFO, "setMenu: %s", menu);
     this.menu = menu;
-
-    if (null != menu) {
+    if (menu != null) {
       if (menu.getItemCount() < 3 || menu.getItemCount() > 5) {
         throw new IllegalArgumentException(
             "BottomNavigation expects 3 to 5 items. " + menu.getItemCount() + " found");
@@ -502,11 +507,11 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
 
     final boolean tablet = isTablet(gravity);
     final int elevation = getResources().getDimensionPixelSize(
-        !tablet ? R.dimen.bbn_elevation : R.dimen.bbn_elevation_tablet);
-    final int backgroundResId = !tablet ? R.drawable.bbn_background
-        : (MiscUtils.isGravityRight(gravity) ? R.drawable.bbn_background_tablet_right
-            : R.drawable.bbn_background_tablet_left);
-    final int paddingBottom = !tablet ? shadowHeight : 0;
+        !tablet ? R.dimen.ribbon_elevation : R.dimen.ribbon_elevation_tablet);
+    final int backgroundResId = !tablet ? R.drawable.ribbon_background
+        : (MiscUtils.isGravityRight(gravity) ? R.drawable.ribbon_background_tablet_right
+            : R.drawable.ribbon_background_tablet_left);
+    final int paddingTop = !tablet ? shadowHeight : 0;
 
     // View elevation
     ViewCompat.setElevation(this, elevation);
@@ -520,7 +525,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
     setBackground(layerDrawable);
 
     // Padding bottom
-    setPadding(0, paddingBottom, 0, 0);
+    setPadding(0, paddingTop, 0, 0);
   }
 
   private void initializeBackgroundColor(final MenuParser.Menu menu) {
@@ -533,12 +538,12 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
 
   private void initializeContainer(final MenuParser.Menu menu) {
     log(TAG, INFO, "initializeContainer");
-    if (null != itemsContainer) {
-      if (menu.isTablet() && !TabletLayout.class.isInstance(itemsContainer)) {
+    if (itemsContainer != null) {
+      if (menu.isTablet() && !(itemsContainer instanceof TabletLayout)) {
         removeView((View) itemsContainer);
         itemsContainer = null;
-      } else if ((menu.isShifting() && !ShiftingTabLayout.class.isInstance(itemsContainer))
-          || (!menu.isShifting() && !FixedTabLayout.class.isInstance(itemsContainer))) {
+      } else if ((menu.isShifting() && !(itemsContainer instanceof ShiftingTabLayout))
+          || (!menu.isShifting() && !(itemsContainer instanceof FixedTabLayout))) {
         removeView((View) itemsContainer);
         itemsContainer = null;
       } else {
@@ -546,7 +551,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
       }
     }
 
-    if (null == itemsContainer) {
+    if (itemsContainer == null) {
       LinearLayout.LayoutParams params =
           new LinearLayout.LayoutParams(menu.isTablet() ? defaultWidth : MATCH_PARENT,
               menu.isTablet() ? MATCH_PARENT : defaultHeight);
@@ -560,7 +565,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
       }
 
       // force the layout manager ID
-      ((View) itemsContainer).setId(R.id.bbn_layoutManager);
+      itemsContainer.setId(R.id.ribbon_container);
       itemsContainer.setLayoutParams(params);
       addView((View) itemsContainer);
     }

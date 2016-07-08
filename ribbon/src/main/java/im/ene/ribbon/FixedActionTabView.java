@@ -88,13 +88,13 @@ public class FixedActionTabView extends ActionTabView {
     super(parent, expanded, menu);
 
     final Resources res = getResources();
-    this.paddingTopActive = res.getDimensionPixelSize(R.dimen.bbn_fixed_item_padding_top_active);
+    this.paddingTopActive = res.getDimensionPixelSize(R.dimen.ribbon_fixed_active_item_padding_top);
     this.paddingTopInactive =
-        res.getDimensionPixelSize(R.dimen.bbn_fixed_item_padding_top_inactive);
-    this.paddingBottom = res.getDimensionPixelSize(R.dimen.bbn_fixed_item_padding_bottom);
-    this.paddingHorizontal = res.getDimensionPixelSize(R.dimen.bbn_fixed_item_padding_horizontal);
-    this.textSizeInactive = res.getDimensionPixelSize(R.dimen.bbn_fixed_text_size_inactive);
-    this.iconSize = res.getDimensionPixelSize(R.dimen.bbn_fixed_item_icon_size);
+        res.getDimensionPixelSize(R.dimen.ribbon_fixed_inactive_item_padding_top);
+    this.paddingBottom = res.getDimensionPixelSize(R.dimen.ribbon_fixed_item_padding_bottom);
+    this.paddingHorizontal = res.getDimensionPixelSize(R.dimen.ribbon_fixed_item_padding_horizontal);
+    this.textSizeInactive = res.getDimensionPixelSize(R.dimen.ribbon_fixed_inactive_item_text_size);
+    this.iconSize = res.getDimensionPixelSize(R.dimen.ribbon_fixed_item_icon_size);
 
     this.animationDuration = menu.getItemAnimationDuration();
     this.colorActive = menu.getColorActive();

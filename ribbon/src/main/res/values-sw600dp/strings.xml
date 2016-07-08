@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bbn_default_view_behavior"
+    <string name="ribbon_behavior_default"
         translatable="false">im.ene.ribbon.TabletBehavior</string>
 </resources>

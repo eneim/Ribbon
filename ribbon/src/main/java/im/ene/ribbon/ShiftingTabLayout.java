@@ -66,13 +66,13 @@ public class ShiftingTabLayout extends ViewGroup implements BottomTabLayout {
     super(context);
     totalChildrenSize = 0;
     maxActiveItemWidth =
-        getResources().getDimensionPixelSize(R.dimen.bbn_shifting_maxActiveItemWidth);
+        getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_active_item_max_width);
     minActiveItemWidth =
-        getResources().getDimensionPixelSize(R.dimen.bbn_shifting_minActiveItemWidth);
+        getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_active_item_min_width);
     maxInactiveItemWidth =
-        getResources().getDimensionPixelSize(R.dimen.bbn_shifting_maxInactiveItemWidth);
+        getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_inactive_item_max_width);
     minInactiveItemWidth =
-        getResources().getDimensionPixelSize(R.dimen.bbn_shifting_minInactiveItemWidth);
+        getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_inactive_item_min_width);
   }
 
   @Override public void removeAll() {

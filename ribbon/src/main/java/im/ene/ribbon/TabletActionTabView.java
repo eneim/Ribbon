@@ -66,7 +66,7 @@ public class TabletActionTabView extends ActionTabView {
     super(parent, expanded, menu);
     this.evaluator = new ArgbEvaluator();
     final Resources res = getResources();
-    this.iconSize = res.getDimensionPixelSize(R.dimen.bbn_tablet_item_icon_size);
+    this.iconSize = res.getDimensionPixelSize(R.dimen.ribbon_tablet_item_icon_size);
     this.animationDuration = menu.getItemAnimationDuration();
     this.colorActive = menu.getColorActive();
     this.colorInactive = menu.getColorInactive();

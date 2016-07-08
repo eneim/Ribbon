@@ -127,7 +127,7 @@ final class MiscUtils {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       Animator currentAnimator =
-          (Animator) backgroundOverlay.getTag(R.id.bbn_backgroundOverlay_animator);
+          (Animator) backgroundOverlay.getTag(R.id.ribbon_background_overlay_animator);
       if (null != currentAnimator) {
         currentAnimator.cancel();
       }

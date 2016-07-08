@@ -77,13 +77,13 @@ public class ShiftingActionTabView extends ActionTabView {
       final MenuParser.Menu menu) {
     super(parent, expanded, menu);
 
-    this.paddingTop = getResources().getDimensionPixelSize(R.dimen.bbn_shifting_item_padding_top);
+    this.paddingTop = getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_item_padding_top);
     this.paddingBottomActive =
-        getResources().getDimensionPixelSize(R.dimen.bbn_shifting_item_padding_bottom_active);
+        getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_active_item_padding_bottom);
     this.paddingBottomInactive =
-        getResources().getDimensionPixelSize(R.dimen.bbn_shifting_item_padding_bottom_inactive);
-    this.iconSize = getResources().getDimensionPixelSize(R.dimen.bbn_shifting_item_icon_size);
-    this.textSize = getResources().getDimensionPixelSize(R.dimen.bbn_shifting_text_size);
+        getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_inactive_item_padding_bottom);
+    this.iconSize = getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_item_icon_size);
+    this.textSize = getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_text_size);
 
     this.animationDuration = menu.getItemAnimationDuration();
     this.colorActive = menu.getColorActive();

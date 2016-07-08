@@ -51,7 +51,7 @@ public class BadgeProvider {
   public BadgeProvider(final BottomNavigationView navigation) {
     this.navigation = navigation;
     this.badgeSize =
-        navigation.getContext().getResources().getDimensionPixelSize(R.dimen.bbn_badge_size);
+        navigation.getContext().getResources().getDimensionPixelSize(R.dimen.ribbon_badge_size);
   }
 
   protected Bundle save() {

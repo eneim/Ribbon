@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="bbn_backgroundOverlay_animator" type="id" />
+  <item name="ribbon_background_overlay_animator" type="id"/>
 
-    <!-- id for the items layout container -->
-    <item name="bbn_layoutManager" type="id" />
+  <!-- id for the items layout container -->
+  <item name="ribbon_container" type="id"/>
 </resources>

@@ -60,5 +60,7 @@ interface BottomTabLayout {
 
   View findViewById(@IdRes final int id);
 
+  void setId(@IdRes int id);
+
   void removeAll();
 }

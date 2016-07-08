@@ -33,7 +33,6 @@
       android:layout_gravity="bottom|end"
       android:layout_margin="@dimen/fab_margin"
       android:src="@android:drawable/ic_dialog_email"
-      android:visibility="gone"
       />
 
   <im.ene.ribbon.BottomNavigationView
@@ -41,7 +40,8 @@
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
       android:background="?attr/selectableItemBackgroundBorderless"
-      app:bbn_entries="@menu/menu_main"
+      app:layout_behavior="@string/ribbon_behavior_phone"
+      app:ribbon_menu="@menu/menu_main"
       />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -2,8 +2,8 @@
 <resources>
   <!-- styles for the 'BottomNavigation' View -->
   <declare-styleable name="BottomNavigationView">
-    <attr format="reference" name="bbn_entries"/>
-    <attr format="string" name="bbn_badgeProvider"/>
+    <attr format="reference" name="ribbon_menu"/>
+    <attr format="string" name="ribbon_badgeProvider"/>
   </declare-styleable>
 
   <!-- styles for the menu resource -->

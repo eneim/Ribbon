@@ -63,8 +63,8 @@ public class FixedTabLayout extends ViewGroup implements BottomTabLayout {
     selectedIndex = 0;
 
     final Resources res = getResources();
-    maxActiveItemWidth = res.getDimensionPixelSize(R.dimen.bbn_fixed_maxActiveItemWidth);
-    minActiveItemWidth = res.getDimensionPixelSize(R.dimen.bbn_fixed_minActiveItemWidth);
+    maxActiveItemWidth = res.getDimensionPixelSize(R.dimen.ribbon_fixed_active_item_max_width);
+    minActiveItemWidth = res.getDimensionPixelSize(R.dimen.ribbon_fixed_active_item_min_width);
   }
 
   @Override public void removeAll() {

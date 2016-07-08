@@ -42,6 +42,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.graphics.Color;
+import android.support.annotation.MenuRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Xml;
@@ -124,11 +125,11 @@ class MenuParser {
     }
 
     public int getRippleColor() {
-      if (0 == rippleColor) {
+      if (rippleColor == 0) {
         if (shifting && !tablet) {
-          rippleColor = ContextCompat.getColor(context, R.color.bbn_shifting_item_ripple_color);
+          rippleColor = ContextCompat.getColor(context, R.color.ribbon_shifting_item_ripple_color);
         } else {
-          rippleColor = ContextCompat.getColor(context, R.color.bbn_fixed_item_ripple_color);
+          rippleColor = ContextCompat.getColor(context, R.color.ribbon_fixed_item_ripple_color);
         }
       }
       return rippleColor;
@@ -216,7 +217,7 @@ class MenuParser {
 
     menu.itemAnimationDuration =
         a.getInt(R.styleable.BottomNavigationMenu_bbn_itemAnimationDuration,
-            context.getResources().getInteger(R.integer.bbn_item_animation_duration));
+            context.getResources().getInteger(R.integer.ribbon_item_animation_duration));
     menu.background = a.getColor(R.styleable.BottomNavigationMenu_android_background, 0);
     menu.rippleColor = a.getColor(R.styleable.BottomNavigationMenu_bbn_rippleColor, 0);
     menu.colorInactive = a.getColor(R.styleable.BottomNavigationMenu_bbn_itemColorInactive, 0);
@@ -227,7 +228,7 @@ class MenuParser {
   }
 
   @SuppressWarnings("checkstyle:cyclomaticcomplexity")
-  protected static Menu inflateMenu(final Context context, int menuRes) {
+  protected static Menu inflateMenu(final Context context, @MenuRes int menuRes) {
     List<ActionTab> tabs = new ArrayList<>();
 
     MenuParser menuParser = new MenuParser();

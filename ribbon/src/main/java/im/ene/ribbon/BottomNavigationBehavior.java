@@ -142,7 +142,7 @@ public class BottomNavigationBehavior extends VerticalScrollingBehavior<BottomNa
     this.scrollEnabled = true;
     this.animationDuration =
         array.getInt(R.styleable.BottomNavigationBehavior_bbn_animationDuration,
-            context.getResources().getInteger(R.integer.bbn_hide_animation_duration));
+            context.getResources().getInteger(R.integer.ribbon_hide_animation_duration));
     this.scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop() * 2;
     this.offset = 0;
     array.recycle();
@@ -187,22 +187,22 @@ public class BottomNavigationBehavior extends VerticalScrollingBehavior<BottomNa
     return isFloatingActionButton(dependency) || SnackbarLayout.class.isInstance(dependency);
   }
 
-  @Override public boolean onLayoutChild(CoordinatorLayout parent, BottomNavigationView abl,
+  @Override public boolean onLayoutChild(CoordinatorLayout parent, BottomNavigationView view,
       int layoutDirection) {
-    boolean handled = super.onLayoutChild(parent, abl, layoutDirection);
+    boolean handled = super.onLayoutChild(parent, view, layoutDirection);
 
-    final int pendingAction = abl.getPendingAction();
+    final int pendingAction = view.getPendingAction();
     if (pendingAction != PENDING_ACTION_NONE) {
       final boolean animate = (pendingAction & PENDING_ACTION_ANIMATE_ENABLED) != 0;
       if ((pendingAction & BottomNavigationView.PENDING_ACTION_COLLAPSED) != 0) {
-        setExpanded(parent, abl, false, animate);
+        setExpanded(parent, view, false, animate);
       } else {
         if ((pendingAction & BottomNavigationView.PENDING_ACTION_EXPANDED) != 0) {
-          setExpanded(parent, abl, true, animate);
+          setExpanded(parent, view, true, animate);
         }
       }
       // Finally reset the pending state
-      abl.resetPendingAction();
+      view.resetPendingAction();
     }
 
     return handled;

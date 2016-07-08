@@ -68,19 +68,19 @@ class AnimUtil {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       Animator currentAnimator =
-          (Animator) backgroundOverlay.getTag(R.id.bbn_backgroundOverlay_animator);
+          (Animator) backgroundOverlay.getTag(R.id.ribbon_background_overlay_animator);
       if (currentAnimator != null) {
         //currentAnimator.end();
         currentAnimator.cancel();
       }
 
-      final float startRadius = 10;
-      final float finalRadius = 20;
-      // centerX > parent.getWidth() / 2 ? centerX : parent.getWidth() - centerX;
+      final float startRadius = 1;
+      final float finalRadius =
+          centerX > parent.getWidth() / 2 ? centerX : parent.getWidth() - centerX;
       animator =
           ViewAnimationUtils.createCircularReveal(backgroundOverlay, centerX, centerY, startRadius,
               finalRadius);
-      backgroundOverlay.setTag(R.id.bbn_backgroundOverlay_animator, animator);
+      backgroundOverlay.setTag(R.id.ribbon_background_overlay_animator, animator);
     } else {
       ViewCompat.setAlpha(backgroundOverlay, 0);
       animator = ViewCompat.animate(backgroundOverlay).alpha(1);

@@ -60,8 +60,8 @@ public class TabletLayout extends ViewGroup implements BottomTabLayout {
     super(context);
     final Resources res = getResources();
     selectedIndex = 0;
-    itemHeight = res.getDimensionPixelSize(R.dimen.bbn_tablet_item_height);
-    paddingTop = res.getDimensionPixelSize(R.dimen.bbn_tablet_layout_padding_top);
+    itemHeight = res.getDimensionPixelSize(R.dimen.ribbon_tablet_item_height);
+    paddingTop = res.getDimensionPixelSize(R.dimen.ribbon_tablet_layout_padding_top);
   }
 
   @Override public void removeAll() {

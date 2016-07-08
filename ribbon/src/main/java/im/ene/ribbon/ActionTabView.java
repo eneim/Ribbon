@@ -51,7 +51,7 @@ import java.lang.ref.SoftReference;
 abstract class ActionTabView extends View {
   public static final float ALPHA_MAX = 255f;
   private ActionTab item;
-  private final int rippleColor;
+  protected final int rippleColor;
   private boolean expanded;
   protected final Paint textPaint;
   protected boolean textDirty;
@@ -73,13 +73,13 @@ abstract class ActionTabView extends View {
 
   void setItem(ActionTab item) {
     final Drawable drawable =
-        ContextCompat.getDrawable(getContext(), R.drawable.bbn_ripple_selector);
+        ContextCompat.getDrawable(getContext(), R.drawable.ribbon_ripple_selector);
     drawable.mutate();
     MiscUtils.setDrawableColor(drawable, rippleColor);
+    this.setBackground(drawable);
 
     this.item = item;
     this.setId(item.getItemId());
-    this.setBackground(drawable);
     this.setEnabled(item.isEnabled());
     invalidateBadge();
   }
