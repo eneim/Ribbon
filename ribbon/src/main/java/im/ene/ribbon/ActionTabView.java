@@ -44,13 +44,14 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import java.lang.ref.SoftReference;
 
 abstract class ActionTabView extends View {
   public static final float ALPHA_MAX = 255f;
-  private ActionTab item;
+  private ActionTab action;
   protected final int rippleColor;
   private boolean expanded;
   protected final Paint textPaint;
@@ -71,34 +72,34 @@ abstract class ActionTabView extends View {
     this.provider = parent.getBadgeProvider();
   }
 
-  void setItem(ActionTab item) {
+  void setAction(ActionTab item) {
     final Drawable drawable =
         ContextCompat.getDrawable(getContext(), R.drawable.ribbon_ripple_selector);
     drawable.mutate();
     MiscUtils.setDrawableColor(drawable, rippleColor);
     this.setBackground(drawable);
 
-    this.item = item;
+    this.action = item;
     this.setId(item.getItemId());
     this.setEnabled(item.isEnabled());
     invalidateBadge();
   }
 
   void invalidateBadge() {
-    Drawable d = provider.getBadgeDrawable(getId());
+    Drawable drawable = provider.getBadgeDrawable(getId());
 
-    if (badge != d) {
-      if (null != badge) {
+    if (badge != drawable) {
+      if (badge != null) {
         badge.setCallback(null);
         badge = null;
       }
 
-      badge = d;
+      badge = drawable;
 
-      if (null != badge) {
+      if (badge != null) {
         badge.setCallback(this);
-        if (badge instanceof BadgeDrawable && null == getParent()) {
-          ((BadgeDrawable) badge).setIsAnimating(false);
+        if (badge instanceof Badge && null == getParent()) {
+          ((Badge) badge).setIsAnimating(false);
         }
       }
 
@@ -108,7 +109,7 @@ abstract class ActionTabView extends View {
     }
   }
 
-  @Override public void invalidateDrawable(final Drawable drawable) {
+  @Override public void invalidateDrawable(@NonNull final Drawable drawable) {
     super.invalidateDrawable(drawable);
 
     if (drawable == badge) {
@@ -119,8 +120,8 @@ abstract class ActionTabView extends View {
   protected abstract void onStatusChanged(final boolean expanded, final int size,
       final boolean animate);
 
-  public final ActionTab getItem() {
-    return item;
+  public final ActionTab getAction() {
+    return action;
   }
 
   public final boolean isExpanded() {
@@ -135,10 +136,10 @@ abstract class ActionTabView extends View {
   }
 
   protected final void drawBadge(final Canvas canvas) {
-    if (null != badge && null != icon) {
-      Rect bounds = icon.getBounds();
-      badge.setBounds(bounds.right - badge.getIntrinsicWidth(), bounds.top, bounds.right,
-          bounds.top + badge.getIntrinsicHeight());
+    if (badge != null && icon != null) {
+      Rect iconBounds = icon.getBounds();
+      badge.setBounds(iconBounds.right - badge.getIntrinsicWidth(), iconBounds.top,
+          iconBounds.right, iconBounds.top + badge.getIntrinsicHeight());
       badge.draw(canvas);
     }
   }

@@ -4,15 +4,13 @@
     tools:context="im.ene.ribbon.demo.MainActivity">
   <item
       android:id="@+id/action_1"
-      android:color="#20033e"
       android:icon="@drawable/ic_face_black_24dp"
       android:orderInCategory="100"
-      android:title="I"
+      android:title="Ribbon"
       app:showAsAction="always"/>
 
   <item
       android:id="@+id/action_2"
-      android:color="#ffffff"
       android:icon="@drawable/ic_favorite_black_24dp"
       android:orderInCategory="100"
       android:title="Like"
@@ -20,7 +18,6 @@
 
   <item
       android:id="@+id/action_3"
-      android:color="#3e3639"
       android:icon="@drawable/ic_android_black_24dp"
       android:orderInCategory="100"
       android:title="Android"
@@ -28,17 +25,15 @@
 
   <item
       android:id="@+id/action_4"
-      android:color="#ffffff"
       android:icon="@drawable/ic_more_horiz_black_24dp"
       android:orderInCategory="100"
       android:title="More"
       app:showAsAction="always"/>
 
-  <!--<item-->
-      <!--android:id="@+id/action_5"-->
-      <!--android:color="?attr/colorPrimaryDark"-->
-      <!--android:icon="@drawable/ic_thumb_up_black_24dp"-->
-      <!--android:orderInCategory="100"-->
-      <!--android:title="Thumb"-->
-      <!--app:showAsAction="always"/>-->
+  <item
+      android:id="@+id/action_5"
+      android:icon="@drawable/ic_thumb_up_black_24dp"
+      android:orderInCategory="100"
+      android:title="Thumb"
+      app:showAsAction="always"/>
 </menu>

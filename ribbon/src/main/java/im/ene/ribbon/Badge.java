@@ -46,16 +46,19 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 
-public class BadgeDrawable extends Drawable {
-  private static final String TAG = BadgeDrawable.class.getSimpleName();
-  public static final float FADE_DURATION = 100f;
-  public static final float ALPHA_MAX = 255f;
+public class Badge extends Drawable {
+  private static final String TAG = Badge.class.getSimpleName();
+
+  private final float FADE_DURATION = 100f;
+  private final float ALPHA_MAX = 255f;
+  private final float ALPHA_MIN = 100f;
+
   private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private long startTimeMillis;
   private boolean animating;
   private final int size;
 
-  public BadgeDrawable(final int color, final int size) {
+  public Badge(final int color, final int size) {
     super();
     this.paint.setColor(color);
     this.size = size;
@@ -63,7 +66,7 @@ public class BadgeDrawable extends Drawable {
     this.startTimeMillis = 0;
   }
 
-  public void setIsAnimating(boolean animating) {
+  public final void setIsAnimating(boolean animating) {
     this.animating = animating;
   }
 
@@ -82,7 +85,7 @@ public class BadgeDrawable extends Drawable {
         paint.setAlpha((int) ALPHA_MAX);
         drawInternal(canvas);
       } else {
-        int partialAlpha = (int) (ALPHA_MAX * normalized);
+        int partialAlpha = (int) (ALPHA_MAX * normalized + ALPHA_MIN * (1f - normalized));
         setAlpha(partialAlpha);
         drawInternal(canvas);
       }

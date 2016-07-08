@@ -86,7 +86,7 @@ public class BadgeProvider {
 
   @SuppressWarnings("unused")
   protected Drawable newDrawable(@IdRes final int itemId, final int preferredColor) {
-    return new BadgeDrawable(preferredColor, badgeSize);
+    return new Badge(preferredColor, badgeSize);
   }
 
   /**
