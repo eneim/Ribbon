@@ -178,7 +178,7 @@ public class ShiftingTabLayout extends ViewGroup implements BottomTabLayout {
     int itemWidthMin;
     int itemWidthMax;
 
-    final int totalWidth = maxInactiveItemWidth * (menu.getItemCount() - 1) + maxActiveItemWidth;
+    final int totalWidth = maxInactiveItemWidth * (menu.getActionCount() - 1) + maxActiveItemWidth;
     Log.v(TAG, "totalWidth(dp): " + totalWidth / density);
 
     if (totalWidth > screenWidth) {
@@ -194,14 +194,14 @@ public class ShiftingTabLayout extends ViewGroup implements BottomTabLayout {
       Log.v(TAG, "itemWidthMin(dp): " + itemWidthMin / density);
       Log.v(TAG, "itemWidthMax(dp): " + itemWidthMax / density);
       Log.v(TAG, "total items size(dp): "
-          + (itemWidthMin * (menu.getItemCount() - 1) + itemWidthMax) / density);
+          + (itemWidthMin * (menu.getActionCount() - 1) + itemWidthMax) / density);
 
-      if (itemWidthMin * (menu.getItemCount() - 1) + itemWidthMax > screenWidth) {
+      if (itemWidthMin * (menu.getActionCount() - 1) + itemWidthMax > screenWidth) {
         itemWidthMax =
-            screenWidth - (itemWidthMin * (menu.getItemCount() - 1)); // minActiveItemWidth?
+            screenWidth - (itemWidthMin * (menu.getActionCount() - 1)); // minActiveItemWidth?
         if (itemWidthMax == itemWidthMin) {
           itemWidthMin = minInactiveItemWidth;
-          itemWidthMax = screenWidth - (itemWidthMin * (menu.getItemCount() - 1));
+          itemWidthMax = screenWidth - (itemWidthMin * (menu.getActionCount() - 1));
         }
       }
     } else {
@@ -220,8 +220,8 @@ public class ShiftingTabLayout extends ViewGroup implements BottomTabLayout {
 
     setTotalSize(itemWidthMin, itemWidthMax);
 
-    for (int i = 0; i < menu.getItemCount(); i++) {
-      final ActionTab item = menu.getItemAt(i);
+    for (int i = 0; i < menu.getActionCount(); i++) {
+      final ActionTab item = menu.getActionItemAt(i);
       Log.d(TAG, "item: " + item);
 
       LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(itemWidthMin, getHeight());
@@ -231,7 +231,7 @@ public class ShiftingTabLayout extends ViewGroup implements BottomTabLayout {
       }
 
       ActionTabView view = new ShiftingActionTabView(parent, i == selectedIndex, menu);
-      view.setItem(item);
+      view.setAction(item);
       view.setLayoutParams(params);
       view.setClickable(true);
       view.setTypeface(parent.typeface);

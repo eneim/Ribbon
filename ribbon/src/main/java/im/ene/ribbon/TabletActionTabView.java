@@ -109,7 +109,7 @@ public class TabletActionTabView extends ActionTabView {
     super.onLayout(changed, left, top, right, bottom);
 
     if (null == this.icon) {
-      this.icon = getItem().getIcon(getContext()).mutate();
+      this.icon = getAction().getIcon(getContext()).mutate();
       this.icon.setColorFilter(isExpanded() ? colorActive : colorInactive,
           PorterDuff.Mode.SRC_ATOP);
       this.icon.setAlpha(Color.alpha(isExpanded() ? colorActive : colorInactive));

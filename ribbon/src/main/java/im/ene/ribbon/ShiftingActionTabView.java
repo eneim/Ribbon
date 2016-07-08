@@ -77,7 +77,8 @@ public class ShiftingActionTabView extends ActionTabView {
       final MenuParser.Menu menu) {
     super(parent, expanded, menu);
 
-    this.paddingTop = getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_item_padding_top);
+    this.paddingTop =
+        getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_item_padding_top);
     this.paddingBottomActive =
         getResources().getDimensionPixelSize(R.dimen.ribbon_shifting_active_item_padding_bottom);
     this.paddingBottomInactive =
@@ -121,12 +122,12 @@ public class ShiftingActionTabView extends ActionTabView {
     final AnimatorSet set = new AnimatorSet();
     set.setDuration(animationDuration * 2);
     set.setInterpolator(interpolator);
-    final ValueAnimator animator1 = ValueAnimator.ofInt(getLayoutParams().width, size);
-    final ValueAnimator animator2 =
+    final ValueAnimator widthAnimator = ValueAnimator.ofInt(getLayoutParams().width, size);
+    final ValueAnimator centerYAnimator =
         ObjectAnimator.ofInt(this, "centerY", expanded ? paddingBottomInactive : paddingTop,
             expanded ? paddingTop : paddingBottomInactive);
 
-    animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    widthAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(final ValueAnimator animation) {
         int size = (int) animation.getAnimatedValue();
         final float fraction = animation.getAnimatedFraction();
@@ -134,7 +135,7 @@ public class ShiftingActionTabView extends ActionTabView {
       }
     });
 
-    set.playTogether(animator1, animator2);
+    set.playTogether(widthAnimator, centerYAnimator);
     set.start();
   }
 
@@ -158,7 +159,7 @@ public class ShiftingActionTabView extends ActionTabView {
 
   private void measureText() {
     log(TAG, INFO, "measureText");
-    this.textWidth = textPaint.measureText(getItem().getTitle());
+    this.textWidth = textPaint.measureText(getAction().getTitle());
   }
 
   @Override
@@ -167,7 +168,7 @@ public class ShiftingActionTabView extends ActionTabView {
     super.onLayout(changed, left, top, right, bottom);
 
     if (null == this.icon) {
-      this.icon = getItem().getIcon(getContext());
+      this.icon = getAction().getIcon(getContext());
       icon.setBounds(0, 0, iconSize, iconSize);
       icon.setColorFilter(isExpanded() ? colorActive : colorInactive, PorterDuff.Mode.SRC_ATOP);
       icon.setAlpha((int) (isExpanded() ? maxAlpha * ALPHA_MAX : minAlpha * ALPHA_MAX));
@@ -191,7 +192,7 @@ public class ShiftingActionTabView extends ActionTabView {
   @Override protected void onDraw(final Canvas canvas) {
     super.onDraw(canvas);
     icon.draw(canvas);
-    canvas.drawText(getItem().getTitle(), textX, textY, textPaint);
+    canvas.drawText(getAction().getTitle(), textX, textY, textPaint);
     drawBadge(canvas);
   }
 
@@ -202,5 +203,12 @@ public class ShiftingActionTabView extends ActionTabView {
   @SuppressWarnings("unused") @proguard.annotation.Keep public void setCenterY(int value) {
     centerY = value;
     requestLayout();
+  }
+
+  @Override void setAction(ActionTab item) {
+    super.setAction(item);
+    if (item.getColor() != 0) {
+      setBackground(null);
+    }
   }
 }

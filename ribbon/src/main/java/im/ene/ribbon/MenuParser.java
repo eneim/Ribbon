@@ -42,6 +42,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.graphics.Color;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.MenuRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -56,7 +57,7 @@ class MenuParser {
 
   static class Menu {
     private final Context context;
-    private ActionTab[] items;
+    private ActionTab[] actionTabs;
     private int colorActive;
     private int background;
     private int rippleColor;
@@ -136,7 +137,7 @@ class MenuParser {
     }
 
     public void setItems(final ActionTab[] items) {
-      this.items = items;
+      this.actionTabs = items;
       this.shifting = null != items && items.length > 360 / 80;
     }
 
@@ -144,20 +145,16 @@ class MenuParser {
       return shifting;
     }
 
-    ActionTab[] getItems() {
-      return items;
+    ActionTab[] getActions() {
+      return actionTabs;
     }
 
-    ActionTab getItemAt(final int index) {
-      return items[index];
+    ActionTab getActionItemAt(final int index) {
+      return actionTabs[index];
     }
 
-    int getItemCount() {
-      if (items != null) {
-        return items.length;
-      }
-
-      return 0;
+    int getActionCount() {
+      return actionTabs != null ? actionTabs.length : 0;
     }
 
     /**
@@ -165,7 +162,7 @@ class MenuParser {
      * has a color defined
      */
     @SuppressWarnings("unused") public boolean hasChangingColor() {
-      return items[0].hasColor();
+      return actionTabs[0].hasColor();
     }
 
     void setTabletMode(final boolean tablet) {
@@ -180,7 +177,7 @@ class MenuParser {
   static class MenuItem {
     private int itemId;
     private CharSequence itemTitle;
-    private int itemIconResId;
+    private int itemIcon;
     private boolean itemEnabled;
     private int itemColor;
 
@@ -192,8 +189,8 @@ class MenuParser {
       return itemTitle;
     }
 
-    public int getItemIconResId() {
-      return itemIconResId;
+    @DrawableRes public int getItemIcon() {
+      return itemIcon;
     }
 
     public boolean isItemEnabled() {
@@ -280,7 +277,7 @@ class MenuParser {
             } else if (tagName.equals("item")) {
               if (menuParser.hasItem()) {
                 MenuItem item = menuParser.pullItem();
-                ActionTab tab = new ActionTab(item.getItemId(), item.getItemIconResId(),
+                ActionTab tab = new ActionTab(item.getItemId(), item.getItemIcon(),
                     String.valueOf(item.getItemTitle()));
                 tab.setEnabled(item.isItemEnabled());
                 tab.setColor(item.getItemColor());
@@ -340,7 +337,7 @@ class MenuParser {
     item = new MenuItem();
     item.itemId = a.getResourceId(R.styleable.BottomNavigationMenuItem_android_id, 0);
     item.itemTitle = a.getText(R.styleable.BottomNavigationMenuItem_android_title);
-    item.itemIconResId = a.getResourceId(R.styleable.BottomNavigationMenuItem_android_icon, 0);
+    item.itemIcon = a.getResourceId(R.styleable.BottomNavigationMenuItem_android_icon, 0);
     item.itemEnabled = a.getBoolean(R.styleable.BottomNavigationMenuItem_android_enabled, true);
     item.itemColor = a.getColor(R.styleable.BottomNavigationMenuItem_android_color, 0);
     a.recycle();

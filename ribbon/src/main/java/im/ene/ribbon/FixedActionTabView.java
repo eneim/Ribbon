@@ -167,7 +167,7 @@ public class FixedActionTabView extends ActionTabView {
     super.onLayout(changed, left, top, right, bottom);
 
     if (this.icon == null) {
-      this.icon = getItem().getIcon(getContext());
+      this.icon = getAction().getIcon(getContext());
       this.icon.mutate().setColorFilter(getCurrentColor(), PorterDuff.Mode.SRC_ATOP);
       this.icon.setAlpha(Color.alpha(getCurrentColor()));
       this.icon.setBounds(0, 0, iconSize, iconSize);
@@ -191,7 +191,7 @@ public class FixedActionTabView extends ActionTabView {
     final int width = getWidth();
     final int height = getHeight();
 
-    textWidth = textPaint.measureText(getItem().getTitle());
+    textWidth = textPaint.measureText(getAction().getTitle());
     textX = paddingHorizontal + (((width - paddingHorizontal * 2) - textWidth) / 2);
     textY = height - paddingBottom;
     textCenterX = width / 2;
@@ -209,7 +209,7 @@ public class FixedActionTabView extends ActionTabView {
 
     canvas.save();
     canvas.scale(canvasTextScale, canvasTextScale, textCenterX, textCenterY);
-    canvas.drawText(getItem().getTitle(), textX, textY, textPaint);
+    canvas.drawText(getAction().getTitle(), textX, textY, textPaint);
     canvas.restore();
   }
 

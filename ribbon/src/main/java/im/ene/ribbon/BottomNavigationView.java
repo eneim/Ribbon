@@ -217,7 +217,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
     if (null == menu) {
       savedState.selectedIndex = 0;
     } else {
-      savedState.selectedIndex = Math.max(0, Math.min(getSelectedItem(), menu.getItemCount() - 1));
+      savedState.selectedIndex = Math.max(0, Math.min(getSelectedItem(), menu.getActionCount() - 1));
     }
 
     if (badgeProvider != null) {
@@ -363,7 +363,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
    */
   public int getMenuItemCount() {
     if (null != menu) {
-      return menu.getItemCount();
+      return menu.getActionCount();
     }
     return 0;
   }
@@ -376,7 +376,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
    */
   @IdRes public int getMenuItemId(final int position) {
     if (null != menu) {
-      return menu.getItemAt(position).getItemId();
+      return menu.getActionItemAt(position).getItemId();
     }
     return 0;
   }
@@ -486,9 +486,9 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
     log(TAG, INFO, "setMenu: %s", menu);
     this.menu = menu;
     if (menu != null) {
-      if (menu.getItemCount() < 3 || menu.getItemCount() > 5) {
+      if (menu.getActionCount() < 3 || menu.getActionCount() > 5) {
         throw new IllegalArgumentException(
-            "BottomNavigation expects 3 to 5 items. " + menu.getItemCount() + " found");
+            "BottomNavigation expects 3 to 5 items. " + menu.getActionCount() + " found");
       }
 
       menu.setTabletMode(isTablet(gravity));
@@ -578,8 +578,8 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
     itemsContainer.populate(menu);
     itemsContainer.setOnItemClickListener(this);
 
-    if (menu.getItemAt(defaultSelectedIndex).hasColor()) {
-      backgroundDrawable.setColor(menu.getItemAt(defaultSelectedIndex).getColor());
+    if (menu.getActionItemAt(defaultSelectedIndex).hasColor()) {
+      backgroundDrawable.setColor(menu.getActionItemAt(defaultSelectedIndex).getColor());
     }
   }
 
@@ -592,7 +592,7 @@ public class BottomNavigationView extends FrameLayout implements OnItemClickList
   private void setSelectedItemInternal(final BottomTabLayout container, final View view,
       final int index, final boolean animate, final boolean fromUser) {
 
-    final ActionTab item = menu.getItemAt(index);
+    final ActionTab item = menu.getActionItemAt(index);
 
     if (container.getSelectedItem() != index) {
       container.setSelectedItem(index, animate);

@@ -144,14 +144,14 @@ public class TabletLayout extends ViewGroup implements BottomTabLayout {
 
     final BottomNavigationView parent = (BottomNavigationView) getParent();
 
-    for (int i = 0; i < menu.getItemCount(); i++) {
-      final ActionTab item = menu.getItemAt(i);
+    for (int i = 0; i < menu.getActionCount(); i++) {
+      final ActionTab item = menu.getActionItemAt(i);
       Log.d(TAG, "item: " + item);
 
       LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(getWidth(), itemHeight);
 
       TabletActionTabView view = new TabletActionTabView(parent, i == selectedIndex, menu);
-      view.setItem(item);
+      view.setAction(item);
       view.setLayoutParams(params);
       view.setClickable(true);
       view.setTypeface(parent.typeface);

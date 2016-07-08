@@ -170,13 +170,13 @@ public class FixedTabLayout extends ViewGroup implements BottomTabLayout {
     Log.v(TAG, "screenWidth: " + screenWidth);
     Log.v(TAG, "screenWidth(dp): " + (screenWidth / density));
 
-    int proposedWidth = Math.min(Math.max(screenWidth / menu.getItemCount(), minActiveItemWidth),
+    int proposedWidth = Math.min(Math.max(screenWidth / menu.getActionCount(), minActiveItemWidth),
         maxActiveItemWidth);
     Log.v(TAG, "proposedWidth: " + proposedWidth);
     Log.v(TAG, "proposedWidth(dp): " + proposedWidth / density);
 
-    if (proposedWidth * menu.getItemCount() > screenWidth) {
-      proposedWidth = screenWidth / menu.getItemCount();
+    if (proposedWidth * menu.getActionCount() > screenWidth) {
+      proposedWidth = screenWidth / menu.getActionCount();
     }
 
     Log.v(TAG, "active size: " + maxActiveItemWidth + ", " + minActiveItemWidth);
@@ -185,14 +185,14 @@ public class FixedTabLayout extends ViewGroup implements BottomTabLayout {
 
     this.itemFinalWidth = proposedWidth;
 
-    for (int i = 0; i < menu.getItemCount(); i++) {
-      final ActionTab item = menu.getItemAt(i);
-      Log.d(TAG, "item: " + item);
+    for (int i = 0; i < menu.getActionCount(); i++) {
+      final ActionTab action = menu.getActionItemAt(i);
+      Log.d(TAG, "item: " + action);
 
       LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(proposedWidth, getHeight());
 
       FixedActionTabView view = new FixedActionTabView(parent, i == selectedIndex, menu);
-      view.setItem(item);
+      view.setAction(action);
       view.setLayoutParams(params);
       view.setClickable(true);
       view.setTypeface(parent.typeface);
