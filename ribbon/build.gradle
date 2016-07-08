@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+  bintrayRepo = 'maven'
+  bintrayName = 'Ribbon'
+
+  publishedGroupId = 'im.ene'
+  libraryName = 'Ribbon'
+  artifact = 'ribbon'
+
+  libraryDescription = 'Android Bottom Navigation done Right.'
+
+  siteUrl = 'https://github.com/eneim/Ribbon'
+  gitUrl = 'https://github.com/eneim/Ribbon.git'
+
+  libraryVersion = '0.0.1'
+
+  developerId = 'eneim'
+  developerName = 'Nam Nguyen'
+  developerEmail = 'nam@ene.im'
+
+  licenseName = 'The Apache Software License, Version 2.0'
+  licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+  allLicenses = ["Apache-2.0"]
+}
+
 android {
   compileSdkVersion 24
   buildToolsVersion "24.0.0"
@@ -27,3 +51,9 @@ dependencies {
   compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
   compile 'com.infstory:proguard-annotations:1.0.2'
 }
+
+// REF: https://inthecheesefactory.com/blog/how-to-upload-library-to-jcenter-maven-central-as-dependency/en
+// > gradlew install
+// > gradlew bintrayUpload
+apply from: 'https://raw.githubusercontent.com/eneim/eneim.github.io/resources/publish/jcenter/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/eneim/eneim.github.io/resources/publish/jcenter/bintrayv1.gradle'
